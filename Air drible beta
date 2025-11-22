@@ -1,8 +1,3 @@
---AUTO AIR DRIBBLE + BLOQUEIO 7s (cronômetro no topo central)
--- Mantive toda a lógica igual — só mudei para 7 segundos
--- Timer vermelho com emojis ⚠️ no início e no final
--- Botão ON agora tem texto menor para caber
-
 local player = game:GetService("Players").LocalPlayer
 local UIS = game:GetService("UserInputService")
 local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -12,10 +7,6 @@ local ativo = false
 local bloqueado = false
 local contadorRodando = false
 
----
-
--- CRIA GUI
-
 local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 ScreenGui.Name = "DribbleToggleGui"
 
@@ -24,12 +15,14 @@ container.Position = UDim2.new(0.05, 0, 0.7, 0)
 container.Size = UDim2.new(0, 230, 0, 50)
 container.BackgroundTransparency = 1
 
--- Botão AIR DRIBBLE
 button = Instance.new("TextButton", container)
 button.Size = UDim2.new(0, 190, 0, 50)
 button.Position = UDim2.new(0, 0, 0, 0)
 button.Text = "Air Dribble OFF"
-button.TextColor3 = Color3.fromRGB(255, 70, 70) -- ALTERADO PRA VERMELHO
+
+-- 🔴 ALTERAÇÃO PEDIDA AQUI
+button.TextColor3 = Color3.fromRGB(255, 50, 50)
+
 button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 button.Font = Enum.Font.Arcade
 button.TextSize = 22
@@ -37,14 +30,16 @@ button.BorderSizePixel = 0
 button.AutoButtonColor = false
 
 stroke = Instance.new("UIStroke", button)
-stroke.Color = Color3.fromRGB(90, 0, 0) -- contorno OFF vermelho escuro
+
+-- 🔴 ALTERAÇÃO PEDIDA AQUI
+stroke.Color = Color3.fromRGB(255, 0, 0)
+
 stroke.Thickness = 3
 stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
 local corner = Instance.new("UICorner", button)
 corner.CornerRadius = UDim.new(0, 12)
 
--- Botão X grudado
 local closeButton = Instance.new("TextButton", container)
 closeButton.Size = UDim2.new(0, 35, 0, 50)
 closeButton.Position = UDim2.new(0, 195, 0, 0)
@@ -56,7 +51,6 @@ closeButton.TextSize = 22
 closeButton.BorderSizePixel = 0
 Instance.new("UICorner", closeButton).CornerRadius = UDim.new(0, 12)
 
--- Cronômetro no topo central (invisível por padrão)
 local timerLabel = Instance.new("TextLabel", ScreenGui)
 timerLabel.Name = "AirDribbleTimer"
 timerLabel.Size = UDim2.new(0, 220, 0, 44)
@@ -64,15 +58,11 @@ timerLabel.Position = UDim2.new(0.5, 0, 0, 12)
 timerLabel.AnchorPoint = Vector2.new(0.5, 0)
 timerLabel.BackgroundTransparency = 1
 timerLabel.Text = ""
-timerLabel.TextColor3 = Color3.fromRGB(255, 60, 60) -- TIMER VERMELHO
+timerLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 timerLabel.Font = Enum.Font.Arcade
 timerLabel.TextSize = 26
 timerLabel.Visible = false
 timerLabel.ZIndex = 50
-
----
-
--- FUNÇÃO PRINCIPAL DO AIR DRIBBLE
 
 function airDribbleDiagonalCima()
     while ativo do
@@ -84,87 +74,81 @@ function airDribbleDiagonalCima()
                 local dir = forward + Vector3.new(0, 0.9, 0)
                 local pos = humanoidRoot.Position + forward * 68 + Vector3.new(0, 7, 0)
 
-                local args = {  
-                    [1] = 85,  
-                    [2] = dir,  
-                    [3] = Vector3.new(0, 0.5, 0),  
-                    [4] = pos,  
-                    [5] = false  
-                }  
+                local args = {
+                    [1] = 85,
+                    [2] = dir,
+                    [3] = Vector3.new(0, 0.5, 0),
+                    [4] = pos,
+                    [5] = false
+                }
 
-                pcall(function() shootRE:FireServer(unpack(args)) end)  
-            end  
-        end  
-        wait(0.2)  
+                pcall(function() shootRE:FireServer(unpack(args)) end)
+            end
+        end
+        wait(0.2)
     end
 end
 
----
-
--- BLOQUEIO DE CHUTE POR 7 SEGUNDOS (COM CRONÔMETRO NO TOPO)
-
-local DURATION_SECONDS = 7 -- <- alterado para 7 segundos
+local DURATION_SECONDS = 7
 
 function iniciarContagem(duration)
     if contadorRodando then return end
     contadorRodando = true
     bloqueado = true
 
-    timerLabel.Visible = true  
+    timerLabel.Visible = true
 
-    local t = duration  
-    while t > 0 and ativo do  
+    local t = duration
+    while t > 0 and ativo do
         timerLabel.Text = "⚠️ Air Dribble: " .. t .. "s ⚠️"
-        button.Text = "Air Dribble ON ("..t..")"  
-        button.TextSize = 18 -- <- texto menor para caber
-        wait(1)  
-        t = t - 1  
-    end  
+        button.Text = "Air Dribble ON ("..t..")"
+        button.TextSize = 18
+        wait(1)
+        t = t - 1
+    end
 
-    timerLabel.Visible = false  
-    timerLabel.Text = ""  
-    bloqueado = false  
-    contadorRodando = false  
+    timerLabel.Visible = false
+    timerLabel.Text = ""
+    bloqueado = false
+    contadorRodando = false
 
-    ativo = false  
-    button.Text = "Air Dribble OFF"  
-    button.TextSize = 22 -- <- volta ao tamanho original
-    button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  
-    stroke.Color = Color3.fromRGB(90, 0, 0) -- contorno OFF vermelho escuro
+    ativo = false
+    button.Text = "Air Dribble OFF"
+    button.TextSize = 22
+    button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+
+    -- 🔴 MANTIVE O ROXO DO OFF COMO ESTAVA
+    stroke.Color = Color3.fromRGB(90, 0, 140)
 end
-
----
-
--- FUNÇÃO DE LIGAR/DESLIGAR
 
 function toggleDribble()
     if not ativo then
         ativo = true
         button.Text = "Air Dribble ON"
-        button.TextSize = 18 
+        button.TextSize = 18
         button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        stroke.Color = Color3.fromRGB(255, 40, 40) -- CONTORNO ON VERMELHO
 
-        task.spawn(airDribbleDiagonalCima)  
-        task.spawn(function() iniciarContagem(DURATION_SECONDS) end)  
-    else  
-        ativo = false  
-        bloqueado = false  
-        contadorRodando = false  
+        -- 🔴 MANTIVE O ROXO DO ON COMO ESTAVA
+        stroke.Color = Color3.fromRGB(180, 0, 255)
 
-        timerLabel.Visible = false  
-        timerLabel.Text = ""  
+        task.spawn(airDribbleDiagonalCima)
+        task.spawn(function() iniciarContagem(DURATION_SECONDS) end)
+    else
+        ativo = false
+        bloqueado = false
+        contadorRodando = false
 
-        button.Text = "Air Dribble OFF"  
+        timerLabel.Visible = false
+        timerLabel.Text = ""
+
+        button.Text = "Air Dribble OFF"
         button.TextSize = 22
-        button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  
-        stroke.Color = Color3.fromRGB(90, 0, 0)
+        button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+
+        -- 🔴 VOLTA PARA O ROXO NORMAL
+        stroke.Color = Color3.fromRGB(90, 0, 140)
     end
 end
-
----
-
--- ÁREA DE ARRASTE (somente canto superior direito)
 
 local dragging = false
 local dragStart
@@ -173,7 +157,7 @@ local startPos
 local function isInDragCorner(x, y)
     local absPos = button.AbsolutePosition
     local absSize = button.AbsoluteSize
-    return (x >= absPos.X + absSize.X - 35 and x <= absPos.X + absSize.X  
+    return (x >= absPos.X + absSize.X - 35 and x <= absPos.X + absSize.X
         and y >= absPos.Y and y <= absPos.Y + 35)
 end
 
@@ -192,12 +176,12 @@ button.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.Touch and dragging then
         local pos = input.Position
         local delta = Vector2.new(pos.X, pos.Y) - dragStart
-        container.Position = UDim2.new(  
-            startPos.X.Scale,  
-            startPos.X.Offset + delta.X,  
-            startPos.Y.Scale,  
-            startPos.Y.Offset + delta.Y  
-        )  
+        container.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
     end
 end)
 
@@ -206,10 +190,6 @@ UIS.InputEnded:Connect(function(input)
         dragging = false
     end
 end)
-
----
-
--- BOTÕES
 
 button.MouseButton1Click:Connect(toggleDribble)
 
