@@ -20,7 +20,7 @@ button.Size = UDim2.new(0, 190, 0, 50)
 button.Position = UDim2.new(0, 0, 0, 0)
 button.Text = "Air Dribble OFF"
 
--- 🔴 ALTERAÇÃO PEDIDA AQUI
+-- 🔴 SEMPRE VERMELHO
 button.TextColor3 = Color3.fromRGB(255, 50, 50)
 
 button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -30,10 +30,7 @@ button.BorderSizePixel = 0
 button.AutoButtonColor = false
 
 stroke = Instance.new("UIStroke", button)
-
--- 🔴 ALTERAÇÃO PEDIDA AQUI
-stroke.Color = Color3.fromRGB(255, 0, 0)
-
+stroke.Color = Color3.fromRGB(255, 0, 0) -- 🔴 SEMPRE VERMELHO
 stroke.Thickness = 3
 stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
@@ -117,8 +114,8 @@ function iniciarContagem(duration)
     button.TextSize = 22
     button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 
-    -- 🔴 MANTIVE O ROXO DO OFF COMO ESTAVA
-    stroke.Color = Color3.fromRGB(90, 0, 140)
+    -- 🔴 AGORA VERMELHO NO OFF
+    stroke.Color = Color3.fromRGB(255, 0, 0)
 end
 
 function toggleDribble()
@@ -128,8 +125,8 @@ function toggleDribble()
         button.TextSize = 18
         button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 
-        -- 🔴 MANTIVE O ROXO DO ON COMO ESTAVA
-        stroke.Color = Color3.fromRGB(180, 0, 255)
+        -- 🔴 AGORA VERMELHO NO ON
+        stroke.Color = Color3.fromRGB(255, 0, 0)
 
         task.spawn(airDribbleDiagonalCima)
         task.spawn(function() iniciarContagem(DURATION_SECONDS) end)
@@ -145,8 +142,8 @@ function toggleDribble()
         button.TextSize = 22
         button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 
-        -- 🔴 VOLTA PARA O ROXO NORMAL
-        stroke.Color = Color3.fromRGB(90, 0, 140)
+        -- 🔴 TAMBÉM VERMELHO AO DESLIGAR
+        stroke.Color = Color3.fromRGB(255, 0, 0)
     end
 end
 
