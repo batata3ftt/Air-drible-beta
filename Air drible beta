@@ -30,7 +30,10 @@ button.BorderSizePixel = 0
 button.AutoButtonColor = false
 
 stroke = Instance.new("UIStroke", button)
-stroke.Color = Color3.fromRGB(255, 0, 0) -- 🔴 SEMPRE VERMELHO
+
+-- 🔴 SEMPRE VERMELHO
+stroke.Color = Color3.fromRGB(255, 0, 0)
+
 stroke.Thickness = 3
 stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
@@ -100,6 +103,11 @@ function iniciarContagem(duration)
         timerLabel.Text = "⚠️ Air Dribble: " .. t .. "s ⚠️"
         button.Text = "Air Dribble ON ("..t..")"
         button.TextSize = 18
+
+        -- 🔴 ATIVO = VERMELHO
+        button.TextColor3 = Color3.fromRGB(255, 0, 0)
+        stroke.Color = Color3.fromRGB(255, 0, 0)
+
         wait(1)
         t = t - 1
     end
@@ -112,9 +120,9 @@ function iniciarContagem(duration)
     ativo = false
     button.Text = "Air Dribble OFF"
     button.TextSize = 22
-    button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 
-    -- 🔴 AGORA VERMELHO NO OFF
+    -- 🔴 FIM DO TEMPO = VERMELHO
+    button.TextColor3 = Color3.fromRGB(255, 0, 0)
     stroke.Color = Color3.fromRGB(255, 0, 0)
 end
 
@@ -123,9 +131,9 @@ function toggleDribble()
         ativo = true
         button.Text = "Air Dribble ON"
         button.TextSize = 18
-        button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 
-        -- 🔴 AGORA VERMELHO NO ON
+        -- 🔴 ON = VERMELHO
+        button.TextColor3 = Color3.fromRGB(255, 0, 0)
         stroke.Color = Color3.fromRGB(255, 0, 0)
 
         task.spawn(airDribbleDiagonalCima)
@@ -140,9 +148,9 @@ function toggleDribble()
 
         button.Text = "Air Dribble OFF"
         button.TextSize = 22
-        button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 
-        -- 🔴 TAMBÉM VERMELHO AO DESLIGAR
+        -- 🔴 OFF = VERMELHO
+        button.TextColor3 = Color3.fromRGB(255, 0, 0)
         stroke.Color = Color3.fromRGB(255, 0, 0)
     end
 end
