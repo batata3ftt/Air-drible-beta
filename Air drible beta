@@ -71,11 +71,11 @@ function airDribbleDiagonalCima()
             local humanoidRoot = character:FindFirstChild("HumanoidRootPart")
             if humanoidRoot then
                 local forward = humanoidRoot.CFrame.LookVector
-                local dir = forward + Vector3.new(0, 0.9, 0)
-                local pos = humanoidRoot.Position + forward * 68 + Vector3.new(0, 7, 0)
+                local dir = forward + Vector3.new(0, 0.7, 0)
+                local pos = humanoidRoot.Position + forward * 68 + Vector3.new(0, 9, 0)
 
                 local args = {
-                    [1] = 85,
+                    [1] = 35,
                     [2] = dir,
                     [3] = Vector3.new(0, 0.5, 0),
                     [4] = pos,
@@ -89,7 +89,7 @@ function airDribbleDiagonalCima()
     end
 end
 
-local DURATION_SECONDS = 7
+local DURATION_SECONDS = 100
 
 function iniciarContagem(duration)
     if contadorRodando then return end
