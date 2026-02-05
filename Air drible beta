@@ -43,7 +43,7 @@ local buttonImage = Instance.new("ImageLabel", button)
 buttonImage.Size = UDim2.new(1, 0, 1, 0)
 buttonImage.Position = UDim2.new(0, 0, 0, 0)
 buttonImage.BackgroundTransparency = 1
-buttonImage.Image = "rbxthumb://type=Asset&id=114376565368542&w=420&h=420"
+buttonImage.Image = "rbxthumb://type=Asset&id=75369603337133&w=420&h=420"
 buttonImage.ScaleType = Enum.ScaleType.Stretch
 buttonImage.ZIndex = 1
 
