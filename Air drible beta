@@ -7,8 +7,19 @@ local ativo = false
 local bloqueado = false
 local contadorRodando = false
 
+local ANIMATION_SPEED = 1.0
+local ANIMATION_DELAY = 1.0
+
+local JUMP_ANIMATION_ID = "rbxassetid://133204282809185"
+local HOLD_ANIMATION_ID = "rbxassetid://78853134632807"
+local KICK_ANIMATION_ID = "rbxassetid://71506591537635"
+local FALL_ANIMATION_ID = "rbxassetid://180436148"
+local IDLE_ANIMATION_ID = "rbxassetid://83308206600747"
+local ANIM1_ANIMATION_ID = "rbxassetid://180435571"
+
 local ScreenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 ScreenGui.Name = "DribbleToggleGui"
+ScreenGui.ResetOnSpawn = false
 
 local container = Instance.new("Frame", ScreenGui)
 container.Position = UDim2.new(0.05, 0, 0.7, 0)
@@ -19,26 +30,33 @@ button = Instance.new("TextButton", container)
 button.Size = UDim2.new(0, 190, 0, 50)
 button.Position = UDim2.new(0, 0, 0, 0)
 button.Text = "Air Dribble OFF"
-
--- 🔴 SEMPRE VERMELHO
-button.TextColor3 = Color3.fromRGB(255, 50, 50)
-
+button.TextColor3 = Color3.fromRGB(255, 255, 0)
 button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+button.BackgroundTransparency = 1
 button.Font = Enum.Font.Arcade
 button.TextSize = 22
 button.BorderSizePixel = 0
 button.AutoButtonColor = false
+button.ZIndex = 2
 
-stroke = Instance.new("UIStroke", button)
-
--- 🔴 SEMPRE VERMELHO
-stroke.Color = Color3.fromRGB(255, 0, 0)
-
-stroke.Thickness = 3
-stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+local buttonImage = Instance.new("ImageLabel", button)
+buttonImage.Size = UDim2.new(1, 0, 1, 0)
+buttonImage.Position = UDim2.new(0, 0, 0, 0)
+buttonImage.BackgroundTransparency = 1
+buttonImage.Image = "rbxthumb://type=Asset&id=137254115150035&w=420&h=420"
+buttonImage.ScaleType = Enum.ScaleType.Stretch
+buttonImage.ZIndex = 1
 
 local corner = Instance.new("UICorner", button)
 corner.CornerRadius = UDim.new(0, 12)
+
+local imageCorner = Instance.new("UICorner", buttonImage)
+imageCorner.CornerRadius = UDim.new(0, 12)
+
+stroke = Instance.new("UIStroke", button)
+stroke.Color = Color3.fromRGB(255, 255, 0)
+stroke.Thickness = 3
+stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
 local closeButton = Instance.new("TextButton", container)
 closeButton.Size = UDim2.new(0, 35, 0, 50)
@@ -58,11 +76,117 @@ timerLabel.Position = UDim2.new(0.5, 0, 0, 12)
 timerLabel.AnchorPoint = Vector2.new(0.5, 0)
 timerLabel.BackgroundTransparency = 1
 timerLabel.Text = ""
-timerLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+timerLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
 timerLabel.Font = Enum.Font.Arcade
 timerLabel.TextSize = 26
 timerLabel.Visible = false
 timerLabel.ZIndex = 50
+
+local animationTracks = {}
+
+function loadAnimations()
+    local character = player.Character
+    if not character then return end
+    
+    local humanoid = character:FindFirstChild("Humanoid")
+    if not humanoid then return end
+    
+    local animator = humanoid:FindFirstChild("Animator")
+    if not animator then return end
+    
+    animationTracks = {}
+    
+    local jumpAnim = Instance.new("Animation")
+    jumpAnim.AnimationId = JUMP_ANIMATION_ID
+    animationTracks.Jump = animator:LoadAnimation(jumpAnim)
+    
+    local holdAnim = Instance.new("Animation")
+    holdAnim.AnimationId = HOLD_ANIMATION_ID
+    animationTracks.Hold = animator:LoadAnimation(holdAnim)
+    
+    local kickAnim = Instance.new("Animation")
+    kickAnim.AnimationId = KICK_ANIMATION_ID
+    animationTracks.Kick = animator:LoadAnimation(kickAnim)
+    
+    local fallAnim = Instance.new("Animation")
+    fallAnim.AnimationId = FALL_ANIMATION_ID
+    animationTracks.Fall = animator:LoadAnimation(fallAnim)
+    
+    local idleAnim = Instance.new("Animation")
+    idleAnim.AnimationId = IDLE_ANIMATION_ID
+    animationTracks.Idle = animator:LoadAnimation(idleAnim)
+    
+    local anim1 = Instance.new("Animation")
+    anim1.AnimationId = ANIM1_ANIMATION_ID
+    animationTracks.Anim1 = animator:LoadAnimation(anim1)
+end
+
+function playShootAnimation()
+    task.spawn(function()
+        if ANIMATION_DELAY > 1 then
+            wait(ANIMATION_DELAY)
+        end
+        
+        if animationTracks.Jump then
+            animationTracks.Jump:Play()
+            animationTracks.Jump:AdjustSpeed(ANIMATION_SPEED)
+        end
+        
+        if animationTracks.Hold then
+            animationTracks.Hold:Play()
+            animationTracks.Hold:AdjustSpeed(ANIMATION_SPEED)
+        end
+        
+        task.wait(2)
+        if animationTracks.Hold then
+            animationTracks.Hold:Stop()
+        end
+        
+        if animationTracks.Kick then
+            animationTracks.Kick:Play()
+            animationTracks.Kick:AdjustSpeed(ANIMATION_SPEED)
+        end
+        
+        if animationTracks.Jump then
+            animationTracks.Jump:Stop()
+        end
+        
+        if animationTracks.Fall then
+            animationTracks.Fall:Play()
+            animationTracks.Fall:AdjustSpeed(ANIMATION_SPEED)
+        end
+        
+        if animationTracks.Idle then
+            animationTracks.Idle:Play()
+            animationTracks.Idle:AdjustSpeed(ANIMATION_SPEED)
+        end
+        
+        task.wait(3)
+        if animationTracks.Kick then
+            animationTracks.Kick:Stop()
+        end
+        
+        if animationTracks.Fall then
+            animationTracks.Fall:Stop()
+        end
+        
+        if animationTracks.Anim1 then
+            animationTracks.Anim1:Play()
+            animationTracks.Anim1:AdjustSpeed(ANIMATION_SPEED)
+        end
+    end)
+end
+
+player.CharacterAdded:Connect(function(character)
+    animationTracks = {}
+    character:WaitForChild("Humanoid")
+    wait(4)
+    loadAnimations()
+end)
+
+if player.Character then
+    loadAnimations()
+end
 
 function airDribbleDiagonalCima()
     while ativo do
@@ -70,12 +194,14 @@ function airDribbleDiagonalCima()
         if character and shootRE then
             local humanoidRoot = character:FindFirstChild("HumanoidRootPart")
             if humanoidRoot then
+                playShootAnimation()
+                
                 local forward = humanoidRoot.CFrame.LookVector
-                local dir = forward + Vector3.new(0, 0.7, 0)
+                local dir = forward + Vector3.new(0, 0.5, 0)
                 local pos = humanoidRoot.Position + forward * 68 + Vector3.new(0, 9, 0)
 
                 local args = {
-                    [1] = 35,
+                    [1] = 60,
                     [2] = dir,
                     [3] = Vector3.new(0, 0.5, 0),
                     [4] = pos,
@@ -85,7 +211,7 @@ function airDribbleDiagonalCima()
                 pcall(function() shootRE:FireServer(unpack(args)) end)
             end
         end
-        wait(0.2)
+        wait(0.6)
     end
 end
 
@@ -95,19 +221,15 @@ function iniciarContagem(duration)
     if contadorRodando then return end
     contadorRodando = true
     bloqueado = true
-
     timerLabel.Visible = true
 
     local t = duration
     while t > 0 and ativo do
-        timerLabel.Text = "⚠️ Air Dribble: " .. t .. "s ⚠️"
+        timerLabel.Text = "Air Dribble: " .. t .. "s"
         button.Text = "Air Dribble ON ("..t..")"
         button.TextSize = 18
-
-        -- 🔴 ATIVO = VERMELHO
-        button.TextColor3 = Color3.fromRGB(255, 0, 0)
-        stroke.Color = Color3.fromRGB(255, 0, 0)
-
+        button.TextColor3 = Color3.fromRGB(255, 255, 0)
+        stroke.Color = Color3.fromRGB(255, 255, 0)
         wait(1)
         t = t - 1
     end
@@ -116,14 +238,11 @@ function iniciarContagem(duration)
     timerLabel.Text = ""
     bloqueado = false
     contadorRodando = false
-
     ativo = false
     button.Text = "Air Dribble OFF"
     button.TextSize = 22
-
-    -- 🔴 FIM DO TEMPO = VERMELHO
-    button.TextColor3 = Color3.fromRGB(255, 0, 0)
-    stroke.Color = Color3.fromRGB(255, 0, 0)
+    button.TextColor3 = Color3.fromRGB(255, 255, 0)
+    stroke.Color = Color3.fromRGB(255, 255, 0)
 end
 
 function toggleDribble()
@@ -131,27 +250,20 @@ function toggleDribble()
         ativo = true
         button.Text = "Air Dribble ON"
         button.TextSize = 18
-
-        -- 🔴 ON = VERMELHO
-        button.TextColor3 = Color3.fromRGB(255, 0, 0)
-        stroke.Color = Color3.fromRGB(255, 0, 0)
-
+        button.TextColor3 = Color3.fromRGB(255, 255, 0)
+        stroke.Color = Color3.fromRGB(255, 255, 0)
         task.spawn(airDribbleDiagonalCima)
         task.spawn(function() iniciarContagem(DURATION_SECONDS) end)
     else
         ativo = false
         bloqueado = false
         contadorRodando = false
-
         timerLabel.Visible = false
         timerLabel.Text = ""
-
         button.Text = "Air Dribble OFF"
         button.TextSize = 22
-
-        -- 🔴 OFF = VERMELHO
-        button.TextColor3 = Color3.fromRGB(255, 0, 0)
-        stroke.Color = Color3.fromRGB(255, 0, 0)
+        button.TextColor3 = Color3.fromRGB(255, 255, 0)
+        stroke.Color = Color3.fromRGB(255, 255, 0)
     end
 end
 
@@ -162,8 +274,7 @@ local startPos
 local function isInDragCorner(x, y)
     local absPos = button.AbsolutePosition
     local absSize = button.AbsoluteSize
-    return (x >= absPos.X + absSize.X - 35 and x <= absPos.X + absSize.X
-        and y >= absPos.Y and y <= absPos.Y + 35)
+    return (x >= absPos.X + absSize.X - 35 and x <= absPos.X + absSize.X and y >= absPos.Y and y <= absPos.Y + 35)
 end
 
 button.InputBegan:Connect(function(input)
@@ -181,12 +292,7 @@ button.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.Touch and dragging then
         local pos = input.Position
         local delta = Vector2.new(pos.X, pos.Y) - dragStart
-        container.Position = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale,
-            startPos.Y.Offset + delta.Y
-        )
+        container.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end
 end)
 
