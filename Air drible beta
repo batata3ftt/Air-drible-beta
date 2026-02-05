@@ -43,7 +43,7 @@ local buttonImage = Instance.new("ImageLabel", button)
 buttonImage.Size = UDim2.new(1, 0, 1, 0)
 buttonImage.Position = UDim2.new(0, 0, 0, 0)
 buttonImage.BackgroundTransparency = 1
-buttonImage.Image = "rbxthumb://type=Asset&id=75369603337133&w=420&h=420"
+buttonImage.Image = "rbxthumb://type=Asset&id=137254115150035&w=420&h=420"
 buttonImage.ScaleType = Enum.ScaleType.Stretch
 buttonImage.ZIndex = 1
 
@@ -198,7 +198,7 @@ function airDribbleDiagonalCima()
                 
                 local forward = humanoidRoot.CFrame.LookVector
                 local dir = forward + Vector3.new(0, 0.5, 0)
-                local pos = humanoidRoot.Position + forward * 68 + Vector3.new(0, 9, 0)
+                local pos = humanoidRoot.Position + forward * 68 + Vector3.new(0, 8, 0)
 
                 local args = {
                     [1] = 60,
